@@ -2,7 +2,8 @@
 import './App.css';
 import React from 'react'
 import Data from './components/Data'
-import AddUser from './components/AddUser'
+import Search from './components/Search'
+// import AddUser from './components/AddUser'
 
 class App extends React.Component {
   constructor(){
@@ -12,7 +13,7 @@ class App extends React.Component {
     }
   } 
   fetchApi(){
-    fetch(' https://dummyapi.io/data/api/user?page=1&limit=10', {
+    fetch(' https://dummyapi.io/data/api/user', {
       method: 'GET',
       headers: {
         "app-id": '60617f6bc94f68d6a87e63b3'
@@ -20,7 +21,6 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res.data)
         this.setState({
           ...this.state,
           users: res.data
@@ -29,24 +29,43 @@ class App extends React.Component {
       .catch(err => console.log(err))
   } 
   addUser = (user) =>  {
-    console.log(this.state.users)
     user.id = Math.random();
     let newData = this.state.users.concat(user)
-    console.log(newData)
     this.setState({
       ...this.state,
       users: newData
     })
   }
+  findUser = (id) => {
+    fetch(`https://dummyapi.io/data/api/user/${id}`, {
+      method: 'GET',
+      headers: {
+        "app-id": '60617f6bc94f68d6a87e63b3'
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+      })
+  }
+  searchEngine = (search) => {
+    const dataSearch = this.state.users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
+    this.setState({
+      ...this.state,
+      users: dataSearch
+    })
+  }
   render() {
     const {users} = this.state
     return (
-    <div className="container">
+    <div className="container mt-4">
+      <Search searchEngine={this.searchEngine}></Search>
+      <br></br>
       <div className="row">
         {users.map(user => {
-          return <Data user={user} key={user.id}></Data>
+          return <Data findUser={this.findUser} user={user} key={user.id}></Data>
         })} 
-        <AddUser addUser={this.addUser}></AddUser>
+        {/* <AddUser addUser={this.addUser}></AddUser> */}
       </div>     
     </div>
     )
