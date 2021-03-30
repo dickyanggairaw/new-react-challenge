@@ -19,7 +19,7 @@ function Data (props) {
       borderRadius: '20px'
     }
     return (
-      <div className="col-3 border-0 shadow">
+      <div className="col-sm-6 col-lg-3 border-0 shadow">
         <div className="card m-2" style={divCard}>
           <img src={user.picture} style={divImage} className="p-2" alt=""/>          
           <div className="card-body">
