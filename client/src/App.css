@@ -53,3 +53,32 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.img-hover-zoom {
+  height: 300px; /* [1.1] Set it as per your need */
+  overflow: hidden; /* [1.2] Hide the overflowing of child elements */
+  cursor:pointer;
+}
+
+.img-hover-zoom--colorize img {
+  transition: transform .5s, filter 1.5s ease-in-out;
+  filter: grayscale(100%);
+}
+
+/* The Transformation */
+.img-hover-zoom--colorize:hover img {
+  filter: grayscale(0);
+  transform: scale(1.1);
+  transform: scale(2) rotate(-25deg);
+}
+
+.img-hover-zoom--colorize h3 {
+  transition: transform .5s;
+  margin-left: 10px;
+}
+
+/* The Transformation */
+.img-hover-zoom--colorize:hover h3 {
+  color: #710000;
+  transform: translateX(20px);
+}
