@@ -1,18 +1,13 @@
 // import logo from './logo.svg';
 import './App.css';
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Data from './components/Data'
 import Search from './components/Search'
 // import AddUser from './components/AddUser'
 
-class App extends React.Component {
-  constructor(){
-    super()
-    this.state = {
-      users: []
-    }
-  } 
-  fetchApi(){
+function App () {
+  const [users, setUsers] = useState([])
+  function fetchApi() {
     fetch(' https://dummyapi.io/data/api/user', {
       method: 'GET',
       headers: {
@@ -21,22 +16,19 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        this.setState({
-          ...this.state,
-          users: res.data
-        })
+        setUsers(res.data)
       })
       .catch(err => console.log(err))
   } 
-  addUser = (user) =>  {
-    user.id = Math.random();
-    let newData = this.state.users.concat(user)
-    this.setState({
-      ...this.state,
-      users: newData
-    })
-  }
-  findUser = (id) => {
+  // addUser = (user) =>  {
+  //   user.id = Math.random();
+  //   let newData = this.state.users.concat(user)
+  //   this.setState({
+  //     ...this.state,
+  //     users: newData
+  //   })
+  // }
+  function findUser (id) {
     fetch(`https://dummyapi.io/data/api/user/${id}`, {
       method: 'GET',
       headers: {
@@ -48,32 +40,29 @@ class App extends React.Component {
         console.log(res)
       })
   }
-  searchEngine = (search) => {
-    const dataSearch = this.state.users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
-    this.setState({
-      ...this.state,
-      users: dataSearch
-    })
+  function searchEngine(search){
+    if(search === '') {
+      fetchApi()
+    }else {
+      const dataSearch = users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
+      setUsers(dataSearch)
+    }
   }
-  render() {
-    const {users} = this.state
+  useEffect(() => {
+    fetchApi()
+  }, [])
     return (
     <div className="container mt-4">
-      <Search searchEngine={this.searchEngine}></Search>
+      <Search searchEngine={searchEngine}></Search>
       <br></br>
       <div className="row">
         {users.map(user => {
-          return <Data findUser={this.findUser} user={user} key={user.id}></Data>
+          return <Data findUser={findUser} user={user} key={user.id}></Data>
         })} 
         {/* <AddUser addUser={this.addUser}></AddUser> */}
       </div>     
     </div>
     )
-  }
-
-  componentDidMount() {
-    this.fetchApi()
-  }
 }
 
 // function App() {

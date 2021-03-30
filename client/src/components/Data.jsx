@@ -1,13 +1,12 @@
 import React from 'react'
 
-class Data extends React.Component {
-  findUser (event, id) {
+function Data (props) {
+  function findUser (event, id) {
     event.preventDefault()
-    this.props.findUser(id)
+    props.findUser(id)
   }
 
-  render () {
-    const {user} = this.props
+    const {user} = props
     const divCard = {
       backgroundColor: 'bisque',
       borderRadius: '10px'
@@ -24,12 +23,11 @@ class Data extends React.Component {
         <div className="card m-2" style={divCard}>
           <img src={user.picture} style={divImage} className="p-2" alt=""/>          
           <div className="card-body">
-            <a href="#" style={divStyle} onClick={(event) => this.findUser(event, user.id)}><p>{user.firstName}</p></a>             
+            <a href="#" style={divStyle} onClick={(event) => findUser(event, user.id)}><p>{user.firstName}</p></a>             
           </div>
         </div>
       </div>
     )
   }
-}
 
 export default Data

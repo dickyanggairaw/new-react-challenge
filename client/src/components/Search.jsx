@@ -1,32 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-class Search extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      search: ''
-    }
-  }
-  searchEngine (event) {
+function Search (props) {
+  const [search, setSearch] = useState('')
+  function searchEngine (event) {
     event.preventDefault()
-    this.props.searchEngine(this.state.search)
+    props.searchEngine(search)
   }
-  handleOnChange = (event) =>  {
-    this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value
-    })
+  function handleOnChange(event) {
+    setSearch(event.target.value)
   }
-  render () {
     return (
-      <form onSubmit={(event) => this.searchEngine(event)}>
+      <form onSubmit={(event) => searchEngine(event)}>
         <div className="form-group">
-          <input type="text" onChange={(event) => this.handleOnChange(event)} className="form-control" name="search" placeholder="Search"/>
+          <input type="text" onChange={(event) => handleOnChange(event)} className="form-control" name="search" placeholder="Search"/>
         </div>
         <button type="submit" className="btn btn-primary">Search</button>
       </form>
     )
-  }
 }
 
 export default Search
