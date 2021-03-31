@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 
-function useFetch (url) {
-  const [data, setDatas] = useState([])
+function useFetchOne (url) {
+  const [data, setDatas] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -14,8 +14,8 @@ function useFetch (url) {
       }
     })
       .then(res => res.json())
-      .then(res => {
-        setDatas(res.data)
+      .then(data => {
+        setDatas(data)
       })
       .catch(err => setError(err))
       .finally( _=> setLoading(false))
@@ -24,9 +24,8 @@ function useFetch (url) {
   return {
     data,
     loading,
-    error,
-    setDatas
+    error
   }
 }
 
-export default useFetch
+export default useFetchOne
