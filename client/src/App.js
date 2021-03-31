@@ -1,6 +1,7 @@
 import './App.css';
 import Home from './pages/Home'
 import DetailUser from './pages/DetailUser'
+import Favorite from './pages/Favorite'
 import React from 'react'
 import {
   BrowserRouter as Router,
@@ -18,13 +19,19 @@ function App () {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/" className="text-light">Home</Link>
+            </li>
+            <li>
+              <Link to="/favorite" className="text-light">Favorite</Link>
             </li>
           </ul>
         </nav>
       </div>
       <Switch>
-      <Route path="/user/:id">
+        <Route path="/favorite">
+          <Favorite />
+        </Route>
+        <Route path="/user/:id">
           <DetailUser></DetailUser>
         </Route>
         <Route path="/">

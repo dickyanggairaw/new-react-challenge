@@ -1,10 +1,30 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import useFetchOne from '../helpers/hooks/useFetchOne'
+import {useSelector, useDispatch} from 'react-redux'
 
 function DetailUser () {
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
     let {id} = useParams()
-    const {data, loading, error} = useFetchOne('https://dummyapi.io/data/api/user/' + id)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    
+    useEffect (() => {
+      setLoading(true)
+      fetch('https://dummyapi.io/data/api/user/' + id, {
+        method: 'GET',
+        headers: {
+          "app-id": '60617f6bc94f68d6a87e63b3'
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          dispatch({type: 'user/setUser', payload: data})
+        })
+        .catch(err => setError(err))
+        .finally( _=> setLoading(false))
+    }, [dispatch, id])
+    
     if(error) {
       return <h1>{error.message}</h1>
     }
@@ -20,12 +40,12 @@ function DetailUser () {
         <div className="container">
           <div className="row">
             <div className="col-4">
-              <img src={data.picture} style={imgStyle} alt=""/>
+              <img src={user.picture} style={imgStyle} alt=""/>
             </div>
             <div className="col-8">
-              <h4>{data.title}. {data.firstName} {data.lastName}</h4>
-              <p>{data.email}</p>
-              <p>{data.gender}</p>
+              <h4>{user.title}. {user.firstName} {user.lastName}</h4>
+              <p>{user.email}</p>
+              <p>{user.gender}</p>
             </div>
           </div>
         </div>

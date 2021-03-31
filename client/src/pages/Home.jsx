@@ -1,13 +1,17 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Data from '../components/Data'
 import Search from '../components/Search'
-import useFetch from '../helpers/hooks/useFetch'
+import {useSelector, useDispatch} from 'react-redux'
 // import AddUser from './components/AddUser'
 
 function Home () {
-  const {data: users, loading, error, setDatas} = useFetch('https://dummyapi.io/data/api/user')
-  function findUser (id) {
-    fetch(`https://dummyapi.io/data/api/user/${id}`, {
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users)  
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  useEffect (() => {
+    setLoading(true)
+    fetch('https://dummyapi.io/data/api/user', {
       method: 'GET',
       headers: {
         "app-id": '60617f6bc94f68d6a87e63b3'
@@ -15,15 +19,19 @@ function Home () {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
+        // console.log(res.data)
+        dispatch({type: 'users/setUsers', payload: res.data})
       })
-  }
+      .catch(err => setError(err))
+      .finally( _=> setLoading(false))
+  }, [dispatch])
+
   function searchEngine(search){
-      const dataSearch = users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
-      setDatas(dataSearch)
+    users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
   }
+
   if(error) {
-    return <h1>{error.message}</h1>
+    return <h1>{error}</h1>
   }
     return (
     <div className="container mt-4">
@@ -33,7 +41,7 @@ function Home () {
         {
           loading ? <div className="container loader"></div> :
           users.map(user => {
-          return <Data findUser={findUser} user={user} key={user.id}></Data>
+          return <Data user={user} key={user.id}></Data>
         })} 
         {/* <AddUser addUser={this.addUser}></AddUser> */}
       </div>     

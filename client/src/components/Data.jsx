@@ -1,12 +1,32 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import heart from '../assets/heart2.svg'
+import {useSelector} from 'react-redux'
+
 
 function Data (props) {
   let history = useHistory()
+  const favorites = useSelector(state => state.favorites)
+  const dispatch = useDispatch()
   function findUser (event, id) {
     event.preventDefault()
-    props.findUser(id)
     history.push('/user/' + id)
+  }
+
+  function addFavorite (event, user) {
+    let flag = false
+    event.preventDefault()
+    favorites.forEach(dataFavorite => {
+      if(dataFavorite.firstName === user.firstName) {
+        history.push('/favorite')
+        flag = true
+      }
+    })
+    if(!flag) {
+      dispatch({type: 'favorite/addFavorite', payload: user})
+      history.push('/favorite')
+    }
   }
 
     const {user} = props
@@ -19,9 +39,10 @@ function Data (props) {
     }
     return (
       <div className="col-sm-6 col-lg-3 border-0 shadow">
-        <div className="card m-2  img-hover-zoom img-hover-zoom--colorize" onClick={(event) => findUser(event, user.id)} style={divCard}>
-          <img src={user.picture} style={divImage} className="p-2" alt=""/>          
-          <h3>{user.firstName}</h3>
+        <div className="card m-2  img-hover-zoom img-hover-zoom--colorize" style={divCard}>
+          <img src={user.picture} style={divImage} className="p-2" alt=""/>    
+          <img src={heart} onClick={(event) => addFavorite(event, user)} alt="" className="above-right-icon"/>      
+          <h3 onClick={(event) => findUser(event, user.id)}>{user.firstName}</h3>
         </div>
       </div>
     )
