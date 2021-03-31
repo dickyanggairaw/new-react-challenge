@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Data from '../components/Data'
 import Search from '../components/Search'
 import {useSelector, useDispatch} from 'react-redux'
+import {fetchUser} from '../store/actions'
 // import AddUser from './components/AddUser'
 
 function Home () {
@@ -20,7 +21,7 @@ function Home () {
       .then(res => res.json())
       .then(res => {
         // console.log(res.data)
-        dispatch({type: 'users/setUsers', payload: res.data})
+        dispatch(fetchUser(res.data))
       })
       .catch(err => setError(err))
       .finally( _=> setLoading(false))

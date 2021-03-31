@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
+import {findUser} from '../store/actions'
 
 function DetailUser () {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ function DetailUser () {
       })
         .then(res => res.json())
         .then(data => {
-          dispatch({type: 'user/setUser', payload: data})
+          dispatch(findUser(data))
         })
         .catch(err => setError(err))
         .finally( _=> setLoading(false))

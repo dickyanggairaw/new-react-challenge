@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import heart from '../assets/heart2.svg'
 import {useSelector} from 'react-redux'
+import {addFavoriteUser} from '../store/actions'
 
 
 function Data (props) {
@@ -24,7 +25,7 @@ function Data (props) {
       }
     })
     if(!flag) {
-      dispatch({type: 'favorite/addFavorite', payload: user})
+      dispatch(addFavoriteUser(user))
       history.push('/favorite')
     }
   }
