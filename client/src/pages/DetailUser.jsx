@@ -1,29 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import {findUser} from '../store/actions'
+import {findUserAsync} from '../store/actions'
 
 function DetailUser () {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const {user,loading, error} = useSelector(state => state.UserReducer)
     let {id} = useParams()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    
+    console.log(user)
     useEffect (() => {
-      setLoading(true)
-      fetch('https://dummyapi.io/data/api/user/' + id, {
-        method: 'GET',
-        headers: {
-          "app-id": '60617f6bc94f68d6a87e63b3'
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          dispatch(findUser(data))
-        })
-        .catch(err => setError(err))
-        .finally( _=> setLoading(false))
+      dispatch(findUserAsync(id))
     }, [dispatch, id])
     
     if(error) {
@@ -35,7 +21,7 @@ function DetailUser () {
     }
   return (
     <div>
-      <h3>Ini Halaman Detail User {id}</h3>
+      <h2 className="container">Profile {user.firstName}</h2><br/>
       {
         loading ? <div className="container loader"></div> :
         <div className="container">

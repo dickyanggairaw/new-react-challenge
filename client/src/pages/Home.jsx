@@ -1,30 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import Data from '../components/Data'
 import Search from '../components/Search'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUser} from '../store/actions'
+import {fetchUserAsync} from '../store/actions'
 // import AddUser from './components/AddUser'
 
 function Home () {
   const dispatch = useDispatch()
-  const users = useSelector(state => state.users)  
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const {users, loading, error} = useSelector(state => state.UserReducer)
   useEffect (() => {
-    setLoading(true)
-    fetch('https://dummyapi.io/data/api/user', {
-      method: 'GET',
-      headers: {
-        "app-id": '60617f6bc94f68d6a87e63b3'
-      }
-    })
-      .then(res => res.json())
-      .then(res => {
-        // console.log(res.data)
-        dispatch(fetchUser(res.data))
-      })
-      .catch(err => setError(err))
-      .finally( _=> setLoading(false))
+    dispatch(fetchUserAsync())
   }, [dispatch])
 
   function searchEngine(search){

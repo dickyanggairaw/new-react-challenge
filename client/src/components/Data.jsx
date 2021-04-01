@@ -8,7 +8,7 @@ import {addFavoriteUser} from '../store/actions'
 
 function Data (props) {
   let history = useHistory()
-  const favorites = useSelector(state => state.favorites)
+  const {favorites} = useSelector(state => state.FavoriteReducer)
   const dispatch = useDispatch()
   function findUser (event, id) {
     event.preventDefault()
@@ -16,18 +16,17 @@ function Data (props) {
   }
 
   function addFavorite (event, user) {
-    let flag = false
     event.preventDefault()
+    let flag = false
     favorites.forEach(dataFavorite => {
       if(dataFavorite.firstName === user.firstName) {
-        history.push('/favorite')
         flag = true
       }
     })
     if(!flag) {
       dispatch(addFavoriteUser(user))
-      history.push('/favorite')
     }
+    history.push('/favorite')
   }
 
     const {user} = props
