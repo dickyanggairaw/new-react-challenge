@@ -2,11 +2,13 @@ import React, {useEffect} from 'react'
 import Data from '../components/Data'
 import Search from '../components/Search'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserAsync, setSearch} from '../store/actions'
+import {fetchUserAsync} from '../store/actions'
+import {useHistory} from 'react-router-dom'
 // import AddUser from './components/AddUser'
 
 function Home () {
   const dispatch = useDispatch()
+  let history = useHistory()
   const {users, loading, error} = useSelector(state => state.UserReducer)
   useEffect (() => {
     dispatch(fetchUserAsync())
@@ -14,7 +16,11 @@ function Home () {
 
   function searchEngine(search){
     const user = users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
-    dispatch(setSearch(user))
+    if(user.length > 0){
+      history.push('/user/' + user[0].id)
+    }else {
+      history.push('/notFound')
+    }
   }
 
   if(error) {

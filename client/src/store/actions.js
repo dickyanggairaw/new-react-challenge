@@ -16,10 +16,6 @@ export function setError (payload) {
   return {type: 'error/setError', payload}
 }
 
-export function setSearch (payload) {
-  return {type: 'searchUser/setUsers', payload}
-}
-
 export function fetchUserAsync () {
   return (dispatch) => {
     dispatch(setLoading(true))

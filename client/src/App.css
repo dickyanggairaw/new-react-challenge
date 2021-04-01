@@ -100,3 +100,11 @@ h2 {
 p {
   font-family: Helvetica, sans-serif;
 }
+
+h1 {
+  text-shadow: 2px 2px 5px red;
+}
+.h1 {
+  text-align: center;
+  margin: 20px;
+}

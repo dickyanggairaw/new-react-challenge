@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import DetailUser from './pages/DetailUser'
 import Favorite from './pages/Favorite'
 import Navbar from './components/Navbar'
+import NotFound from './pages/NotFound'
 import React from 'react'
 import {
   BrowserRouter as Router,
@@ -15,16 +16,19 @@ import {
 function App () {
   return (
     <Router>
-      <Navbar></Navbar>
+      <Navbar />
       <Switch>
+        <Route path="/notFound">
+          <NotFound />
+        </Route>
         <Route path="/favorite">
           <Favorite />
         </Route>
         <Route path="/user/:id">
-          <DetailUser></DetailUser>
+          <DetailUser />
         </Route>
         <Route path="/">
-          <Home></Home>
+          <Home />
         </Route>
       </Switch>
     </Router>
