@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import Data from '../components/Data'
 import Search from '../components/Search'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserAsync} from '../store/actions'
+import {fetchUserAsync, setSearch} from '../store/actions'
 // import AddUser from './components/AddUser'
 
 function Home () {
@@ -13,7 +13,8 @@ function Home () {
   }, [dispatch])
 
   function searchEngine(search){
-    users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
+    const user = users.filter(user => user.firstName.toLowerCase() === search.toLowerCase())
+    dispatch(setSearch(user))
   }
 
   if(error) {
